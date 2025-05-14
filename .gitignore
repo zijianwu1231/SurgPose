@@ -3,3 +3,4 @@ kps_annotation
 data
 __pycache__
 .idea
+**/MonSter/pretrained/*.pth

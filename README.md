@@ -63,11 +63,14 @@ We provide `kps_annotation_sam2.py` to generate keypoints annotation files. It i
 4. For now, you may have to manually get (positive and/or negative) point prompts for each UV paint dot. We consider providing a GUI for easier labeling in the future.
 
 ## Stereo Depth Estimation
-We provide example code for stereo matching based on [RAFT](https://github.com/princeton-vl/RAFT). 
+We provide example code for stereo matching based on [MonSter](https://github.com/Junda24/MonSter) and [RAFT](https://github.com/princeton-vl/RAFT). 
 
 1. <b>Stereo Camera Calibration:</b> SurgPose includes stereo camera parameters `StereoCalibrationDVRK.ini` deriving from [MATLAB 2024b Stereo Camera Calibration](https://www.mathworks.com/help/vision/ug/using-the-stereo-camera-calibrator-app.html) Application. In `StereoCalibrationDVRK.ini`, k0, k1, k4 refer radial distortion coeffients and k2, k3 infer tangential distortion coeffients.
 
-2. <b>Stereo Matching:</b> Run `python depth_estimator.py -d [path to data, e.g. /SurgPose/000000] -c [path to the stereo calibration parameters file]`. Note that the original image size of SurgPose is 1400x986. In this example script, to run RAFT, the image size needs to be resized to the multiple of 8, e.g., 640x512. Based on RAFT, not all frames can get very accurate depth. Feel free to try other stereo matching methods with stronger performance.
+2. <b>Stereo Matching:</b> Run `python depth_estimator.py -d [path to data, e.g. /SurgPose/000000] -c [path to the stereo calibration parameters file] -m ['monster' or 'raft']`. Note that the original image size of SurgPose is 1400x986. Feel free to try other stereo matching methods with stronger performance.
+
+    - To run MonSter, the input image can be any resolution. You need to download the pretrained checkpoints of Depth Anything v2 ([depth_anything_v2_vitl.pth](https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth?download=true)) and MonSter ([mix_all.pth](https://huggingface.co/cjd24/MonSter/resolve/main/mix_all.pth?download=true)). After downloading, put them under the `./MonSter/pretrained` directory.
+    - To run RAFT, the image size needs to be resized to the multiple of 8, e.g., 640x512. 
 
 3. <b>Interactive Depth Viewer</b> Run `python utils/interactive_depth_viewer.py --depth_dir [path to stereo matching generated folder, e.g. /SurgPose/000000/stereo] --idx_frame [index of your selected frame, 0~1000]`. This script can display the estimated depth interactively.
 ## Trajectory Generation
@@ -105,7 +108,7 @@ Here we list a few baselines that can be used for Surgical Instrument Pose Estim
 3. [ViTPose: Simple Vision Transformer Baselines for Human Pose Estimation](https://github.com/ViTAE-Transformer/ViTPose) The annotation need to be reformated to COCO format.
 
 ## Acknowledgement
-We sincerely appreciate [RAFT](), and [Segment Anything 2](). Many thanks to these fantastic works and their open-sourse contribution!
+We sincerely appreciate [RAFT](), [MonSter](), and [Segment Anything 2](). Many thanks to these fantastic works and their open-sourse contribution!
 
 ## Citation
 If you feel SurgPose or this codebase is helpful, please consider cite this paper:
